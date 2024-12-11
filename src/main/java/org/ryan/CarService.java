@@ -5,6 +5,9 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+import java.util.Objects;
+
 @ApplicationScoped
 public class CarService {
     @Inject
@@ -14,10 +17,24 @@ public class CarService {
         return carRepository.findById(id);
     }
 
-    @Transactional
-    public void createCar(Car car) {
+    public List<Car> findAllCar() {
+        return carRepository.findAllCar();
+    }
 
-        System.out.println("Car created: " + "xixixi");
+    @Transactional
+    public Car createCar(Car car) {
+        return carRepository.save(car);
+    }
+
+    public Car updateCar(Car car, String brand, Double price) {
+        if(Objects.nonNull(brand)){
+            car.brand = brand;
+        }
+
+        if(Objects.nonNull(price)){
+            car.price = price;
+        }
+        return carRepository.save(car);
     }
 }
 
