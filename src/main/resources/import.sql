@@ -1,6 +1,16 @@
--- This file allow to write SQL commands that will be emitted in test and dev.
--- The commands are commented as their support depends of the database
--- insert into myentity (id, field) values(1, 'field-1');
--- insert into myentity (id, field) values(2, 'field-2');
--- insert into myentity (id, field) values(3, 'field-3');
--- alter sequence myentity_seq restart with 4;
+CREATE TABLE cars (
+	id SERIAL primary key,
+	brand varchar(100) NULL,
+	color varchar(50) NULL,
+	price numeric(20, 2) NULL,
+	price_unit bpchar(3) NULL,
+	speed int4 NULL,
+	speed_unit varchar(50) NULL
+);
+
+insert into cars (brand, color, price, price_unit, speed, speed_unit) values
+('Toyota', 'Blue', 800000000, 'IDR', 300, 'KM/H');
+
+select * from cars;
+
+drop table cars;
