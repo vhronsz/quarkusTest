@@ -1,7 +1,8 @@
 package org.ryan;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Entity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 
 
 /**
@@ -24,8 +25,12 @@ import jakarta.persistence.Entity;
  * }
  */
 @Entity
-public class CarEntity extends PanacheEntity {
+@Table(name = "cars")
+public class Car extends PanacheEntityBase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
+
     public String brand;
     public String color;
 
@@ -34,4 +39,15 @@ public class CarEntity extends PanacheEntity {
 
     public int speed;
     public String speed_unit;
+
+    public Car(){}
+    public Car(long id, String brand, String color, double price, String price_unit, int speed, String speed_unit) {
+        this.id = id;
+        this.brand = brand;
+        this.color = color;
+        this.price = price;
+        this.price_unit = price_unit;
+        this.speed = speed;
+        this.speed_unit = speed_unit;
+    }
 }
