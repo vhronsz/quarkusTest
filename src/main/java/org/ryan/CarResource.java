@@ -60,4 +60,15 @@ public class CarResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
+
+    @DELETE
+    @Path("/{id}")
+    public Response delete(@PathParam("id") Long id) {
+        Car car = carService.getCarById(id);
+
+        if(Objects.isNull(car)){
+            return Response.status(Response.Status.NOT_FOUND).entity("Car not found").build();
+        }
+        return Response.ok(carService.deleteCarById(id)).build();
+    }
 }

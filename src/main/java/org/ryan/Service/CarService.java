@@ -38,6 +38,15 @@ public class CarService {
         }
         return carRepository.save(car);
     }
+
+    @Transactional
+    public String deleteCarById(Long id) {
+        boolean isSuccess = carRepository.deleteById(id);
+        if(isSuccess){
+            return "Car deleted successfully";
+        }
+        return "Car not found";
+    }
 }
 
 
