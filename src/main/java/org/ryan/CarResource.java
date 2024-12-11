@@ -1,15 +1,15 @@
 package org.ryan;
 
-import io.quarkus.vertx.web.Param;
-import io.quarkus.vertx.web.Route;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.reactive.RestResponse;
+import org.ryan.Entity.Car;
+import org.ryan.Request.UpdateCarRequest;
+import org.ryan.Service.CarService;
 
-import java.util.List;
 import java.util.Objects;
 
 @Path("/cars")
@@ -21,41 +21,43 @@ public class CarResource {
 
     @GET
     @Path("/{id}")
-    public RestResponse get(@PathParam("id") Long id) {
-        return RestResponse.ok(carService.getCarById(id));
+    public Response get(@PathParam("id") Long id) {
+        return Response.ok(carService.getCarById(id)).build();
     }
 
     @GET
-    public RestResponse getAll() {
-        return RestResponse.ok(carService.findAllCar());
+    public Response getAll() {
+        return Response.ok(carService.findAllCar()).build();
     }
 
     @POST
-    public RestResponse create(Car car) {
+    public Response create(Car car) {
         try {
-            return RestResponse.ok(carService.createCar(car));
+            return Response.ok(carService.createCar(car)).build();
         }catch (Exception e){
             System.out.println(e.getMessage());
-            return RestResponse.status(Response.Status.BAD_REQUEST, e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @PUT
     @Path("/{id}")
-    public RestResponse update(@PathParam("id") Long id, String brand, Double price) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response update(@PathParam("id") Long id, UpdateCarRequest request) {
         Car car = carService.getCarById(id);
         if(Objects.isNull(car)){
-            return RestResponse.status(Response.Status.NOT_FOUND, "Car not found");
+            return Response.status(Response.Status.NOT_FOUND).entity("Car not found").build();
         }
 
-        if(Objects.isNull(brand) && Objects.isNull(price) ){
-            return RestResponse.status(422, "Brand or Price is null");
+        if(Objects.isNull(request) || Objects.isNull(request.brand) && Objects.isNull(request.price) ){
+            return Response.status(422).entity("Brand or Price is null").build();
         }
 
         try{
-            return RestResponse.ok(carService.updateCar(car, brand, price));
+            return Response.ok(carService.updateCar(car, request.brand, request.price)).build();
         }catch (Exception e){
-            return RestResponse.status(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
 }

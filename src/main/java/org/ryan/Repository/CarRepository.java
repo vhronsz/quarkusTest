@@ -1,7 +1,8 @@
-package org.ryan;
+package org.ryan.Repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.ryan.Entity.Car;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class CarRepository implements PanacheRepository<Car> {
     }
 
     public Car save(Car car) {
-        persist(car);
+        car.persistAndFlush();
         return car;
     }
 }

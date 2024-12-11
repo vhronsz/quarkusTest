@@ -1,9 +1,10 @@
-package org.ryan;
+package org.ryan.Service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
+import org.ryan.Entity.Car;
+import org.ryan.Repository.CarRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,7 @@ public class CarService {
         return carRepository.save(car);
     }
 
+    @Transactional
     public Car updateCar(Car car, String brand, Double price) {
         if(Objects.nonNull(brand)){
             car.brand = brand;

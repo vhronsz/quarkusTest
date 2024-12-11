@@ -1,6 +1,5 @@
-package org.ryan;
+package org.ryan.Entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 
@@ -28,7 +27,6 @@ import jakarta.persistence.*;
 @Table(name = "cars")
 public class Car extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
 
     public String brand;
